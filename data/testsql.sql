@@ -52,10 +52,102 @@ WHERE hire_date >= '1986-01-01'
 -- department number, department name, 
 -- the manager's employee number, last name, first name.
 
-SELECT dept_no, dept_name,  dept_manager.dept_no, dept_manager.emp_no,
-employees.first_name, employees.last_name
-FROM departments 
--- 	LEFT JOIN departments ON departments.dept_no = dept_manager.dept_no
-	LEFT JOIN employees ON (dept_manager.emp_no = e.emp_no)
-	
+SELECT 
+	e.emp_no,
+	e.first_name,
+	e.last_name,
+	m.dept_no,
+    d.dept_name
+FROM
+ employees e
+
+INNER JOIN 
+ dept_manager m
+	ON m.emp_no = e.emp_no
+INNER JOIN 
+ departments d
+	ON d.dept_no = m.dept_no
+ORDER BY emp_no;
+
+-- 4. List the department of each employee with the following information: 
+-- employee number, last name, first name, and department name.
+SELECT 
+	e.emp_no,
+	e.first_name,
+	e.last_name,
+    d.dept_name
+FROM
+ employees e
+INNER JOIN 
+ dept_emp m
+	ON m.emp_no = e.emp_no
+INNER JOIN 
+ departments d
+	ON d.dept_no = m.dept_no
+ORDER BY emp_no;
+
+-- 5. List first name, last name, and sex for employees 
+-- whose first name is "Hercules" and last names begin with "B."
+
+SELECT 
+	first_name,
+	last_name,
+	sex
+FROM
+	employees
+WHERE 
+	first_name = 'Hercules';
+
+-- 6. List all employees in the Sales department, 
+-- including their employee number, last name, first name,
+-- and department name.
+SELECT 
+	e.emp_no,
+	e.first_name,
+	e.last_name,
+    d.dept_name
+FROM
+ employees e
+INNER JOIN 
+ dept_emp m
+	ON m.emp_no = e.emp_no
+INNER JOIN 
+ departments d
+	ON d.dept_no = m.dept_no
+WHERE 
+	dept_name = 'Sales'
+ORDER BY emp_no;
+
+-- 7. List all employees in the Sales and Development departments, 
+-- including their employee number, last name, first name, 
+-- and department name.
+
+SELECT 
+	e.emp_no,
+	e.first_name,
+	e.last_name,
+    d.dept_name
+FROM
+ employees e
+INNER JOIN 
+ dept_emp m
+	ON m.emp_no = e.emp_no
+INNER JOIN 
+ departments d
+	ON d.dept_no = m.dept_no
+WHERE 
+	dept_name = 'Sales' OR dept_name = 'Development' 
+ORDER BY emp_no;
+
+-- 8. In descending order, list the frequency count of employee last names,
+-- i.e., how many employees share each last name.
+SELECT
+	last_name,
+	COUNT (last_name)
+FROM
+	employees
+GROUP BY	
+	last_name
+ORDER BY count;
+
 	
